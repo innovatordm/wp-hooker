@@ -9,6 +9,13 @@ Author URI: http://www.innovator.se
 Text Domain: wp-hooker
 */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+require_once( 'classes/HookerSettings.php');
+
 /**
  * Main Class for WP Hooker
  */
@@ -44,7 +51,7 @@ class WPHooker
 				add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
 		}
 		
-		add_action( 'shutdown', __CLASS__ . '::execSave' );
+		//add_action( 'shutdown', __CLASS__ . '::execSave' );
 	}
 
 	/**
