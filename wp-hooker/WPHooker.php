@@ -37,12 +37,13 @@ class WPHooker
 	public function init()
 	{
 		global $wp_filter;
+		$this->registerPostType();
 		$this->hooks = array_keys($wp_filter);
 		for ($i=0; $i < count($this->hooks); $i++) { 
 			if($hook !== 'init')
 				add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
 		}
-		global $wp_filter;
+		
 		add_action( 'shutdown', __CLASS__ . '::execSave' );
 	}
 
@@ -57,7 +58,7 @@ class WPHooker
 	        'name' => __( 'Sessions' ),
 	        'singular_name' => __( 'Session' )
 	      ),
-	      'public' => false,
+	      'public' => true,
 	      'has_archive' => false, 
 	    )
 	  );
@@ -106,8 +107,7 @@ class WPHooker
 	 */
 	public function saveToWP()
 	{
-		var_dump(serialize($this->hookLog));
-		/*
+		
 		// Generate a unique ID for the session
 		$sessionId = uniqid();
 		$post = array(
@@ -118,8 +118,8 @@ class WPHooker
 			'post_author'    => 1 // Temporary id, change to user who activated the session recording
 		);
 		// Save session data as post
-		wp_insert_post(
-		); */
+		$postId = wp_insert_post($post);
+		add_post_meta( $postId, '_session_data', $this->hookLog, true );
 	}
 
 	/**
