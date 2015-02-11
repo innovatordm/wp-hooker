@@ -1,4 +1,5 @@
 <?php
+use WPHooker\Classes\HookerSettings;
 /*
 Plugin Name: WordPress Hooker
 Plugin URI: http://www.innovator.se
@@ -30,6 +31,7 @@ class WPHooker
 	 * Class variables
 	 */
 	private $hooks,
+			$settings,
 			$hookLog;
 	
 	function __construct()
@@ -44,14 +46,20 @@ class WPHooker
 	public function init()
 	{
 		global $wp_filter;
-		$this->registerPostType();
-		$this->hooks = array_keys($wp_filter);
-		for ($i=0; $i < count($this->hooks); $i++) { 
-			if($hook !== 'init')
-				add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
-		}
 		
-		//add_action( 'shutdown', __CLASS__ . '::execSave' );
+		$this->settings = new HookerSettings();
+
+		$this->registerPostType();
+
+		$this->hooks = array_keys($wp_filter);
+		// Run only if status is set to active
+		if($this->settings->getOption('wp-hooker-status')) {
+			for ($i=0; $i < count($this->hooks); $i++) { 
+				if($hook !== 'init')
+					add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
+			}
+			add_action( 'shutdown', __CLASS__ . '::execSave' );
+		}
 	}
 
 	/**
