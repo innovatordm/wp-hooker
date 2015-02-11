@@ -1,5 +1,7 @@
 <?php
 use WPHooker\Classes\HookerSettings;
+use WPHooker\Classes\HookerPostTypes;
+use WPHooker\Classes\HookerAdminRender;
 /*
 Plugin Name: WordPress Hooker
 Plugin URI: http://www.innovator.se
@@ -16,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once( 'classes/HookerSettings.php');
+require_once( 'classes/HookerPostTypes.php');
+require_once( 'classes/HookerAdminRender.php');
 
 /**
  * Main Class for WP Hooker
@@ -46,10 +50,10 @@ class WPHooker
 	public function init()
 	{
 		global $wp_filter;
-		
+
 		$this->settings = new HookerSettings();
 
-		$this->registerPostType();
+		HookerPostTypes::init();
 
 		$this->hooks = array_keys($wp_filter);
 		// Run only if status is set to active
@@ -60,24 +64,12 @@ class WPHooker
 			}
 			add_action( 'shutdown', __CLASS__ . '::execSave' );
 		}
-	}
 
-	/**
-	 * Register wp_hooker post type
-	 * @return void
-	 */
-	function registerPostType() {
-	  register_post_type( 'wp_hooker',
-	    array(
-	      'labels' => array(
-	        'name' => __( 'Sessions' ),
-	        'singular_name' => __( 'Session' )
-	      ),
-	      'public' => true,
-	      'has_archive' => false, 
-	    )
-	  );
+		// Only run if in admin
+		if(is_admin())
+			new HookerAdminRender();
 	}
+	
 
 	/**
 	 * Check if an instance of the class exists, and either creates a new one or returns the existing one
@@ -129,8 +121,7 @@ class WPHooker
 			'post_name'      => $sessionId,
 			'post_title'     => 'Session: ' . $sessionId,
 			'post_status'    => 'publish', // Default 'draft'.
-			'post_type'      => 'wp_hooker',
-			'post_author'    => 1 // Temporary id, change to user who activated the session recording
+			'post_type'      => 'wp_hooker'		
 		);
 		// Save session data as post
 		$postId = wp_insert_post($post);
