@@ -35,6 +35,7 @@ class WPHooker
 	 * Class variables
 	 */
 	private $hooks,
+			$hooksInfo,
 			$settings,
 			$hookLog;
 	
@@ -55,9 +56,10 @@ class WPHooker
 
 		HookerPostTypes::init();
 
+		$this->hooksInfo = $wp_filter;
 		$this->hooks = array_keys($wp_filter);
 		// Run only if status is set to active
-		if($this->settings->getOption('wp-hooker-status')) {
+		if($this->settings->getOption('wp-hooker-status') == 1) {
 			for ($i=0; $i < count($this->hooks); $i++) { 
 				if($hook !== 'init')
 					add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
@@ -89,8 +91,15 @@ class WPHooker
 	 */
 	private function logger($hookName='')
 	{
-		if(!empty($hookName))
-			$this->hookLog[microtime(true) . '-' . uniqid()] = $hookName;	
+		
+		if(!empty($hookName)) {
+			
+			$this->hookLog[microtime(true) . '-' . uniqid()] = 
+			array(
+				$hookName,
+				serialize($this->hooksInfo[$hookName])
+			);
+		}	
 	}
 
 	/**
@@ -114,18 +123,19 @@ class WPHooker
 	 */
 	public function saveToWP()
 	{
-		
+
 		// Generate a unique ID for the session
 		$sessionId = uniqid();
 		$post = array(
 			'post_name'      => $sessionId,
-			'post_title'     => 'Session: ' . $sessionId,
+			'post_title'     => $_SERVER['REQUEST_URI'] . ' &mdash; [Session: ' . $sessionId . ']',
 			'post_status'    => 'publish', // Default 'draft'.
 			'post_type'      => 'wp_hooker'		
 		);
 		// Save session data as post
 		$postId = wp_insert_post($post);
 		add_post_meta( $postId, '_session_data', $this->hookLog, true );
+		
 	}
 
 	/**

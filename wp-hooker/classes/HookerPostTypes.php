@@ -36,7 +36,7 @@ class HookerPostTypes
 	public static function init()
 	{
 		self::registerPostType();
-		self::removePostTypeSupport();
+		//self::removePostTypeSupport();
 	}
 	/**
 	 * Register wp_hooker post type
@@ -45,12 +45,17 @@ class HookerPostTypes
 	private static function registerPostType() {
 	  register_post_type( 'wp_hooker',
 	    array(
-	      'labels' => array(
-	        'name' => __( 'Sessions' ),
-	        'singular_name' => __( 'Session' )
-	      ),
-	      'public' => true,
-	      'has_archive' => false, 
+	      	'labels' => array(
+	        	'name' => __( 'Sessions' ),
+	        	'singular_name' => __( 'Session' )
+	      	),
+	      	'public' => true,
+	      	'has_archive' => false,
+	      	'supports' => array('title'),
+	      	'capabilities' => array(
+		        'create_posts' => false,
+		    ),
+		    'map_meta_cap' => true, 
 	    )
 	  );
 	}

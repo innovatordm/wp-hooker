@@ -5,44 +5,119 @@ namespace WPHooker\Classes;
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-
+/*
 if ( ! class_exists( 'AdminPageFramework')  && file_exists( dirname( __FILE__ ) . '/lib/AdminPageFramework/admin-page-framework.min.php' ) ) {
     require_once( dirname( __FILE__ ) . '/lib/AdminPageFramework/admin-page-framework.min.php' );
-}
+} */
 
 /**
 * Class for rendering Hooker Admin pages, extends Admin Page framework class
 */
-class HookerAdminRender extends AdminPageFramework
-{
-	
-	function __construct()
-	{
-		$this->init();
+class HookerAdminRender
+{  
+   public function removeOptions($actions)
+   {
+   		global $post;
+	    if( $post->post_type == 'wp_hooker' ) {
+			unset($actions['inline hide-if-no-js']);
+			unset($actions['edit']);
+			unset($actions['view']);
+		}
+	    return $actions;
+   }
 
-		parent::__construct();
-	}
+   public function removeMetaBoxes()
+   {
+   		global $post;
+	    if( $post->post_type == 'wp_hooker' ) {
+   			remove_meta_box( 'submitdiv','wp_hooker','side' );
+   		}
+   }
 
-	public function init() {
-      
-        // Create the root menu - specifies to which parent menu to add.
-        $this->setRootMenuPage( 'WP Hooker Sessions' );  
- 
-        // Add the sub menus and the pages.
-        $this->addSubMenuItems(
-            array(
-                'title'     => 'All Hooker Sessions',  // page and menu title
-                'page_slug' => 'all_hooker_sessions'     // page slug
-            )
-        );
-    }
+   public function outputList()
+   {
+   		global $post;
+   		if($post->post_type !== 'wp_hooker')
+   			return;
 
-    public function all_hooker_sessions()
-    {
-    	?>
-	    <h3>Action Hook</h3>
-	    <p>This is inserted by the 'do_' + page slug method.</p>
-	    <?php
-    }
+   		$sessionData = get_post_meta( $post->ID, '_session_data', true);
+   			
+   		if(!empty($sessionData)) {
+   			?>
+   			<table class="widefat">
+				<thead>
+					<tr>
+						<th class="row-title">Time From Start</th>
+						<th>Hook Name</th>
+						<th>Hooked Functions</th>
+					</tr>
+				</thead>
+				<tbody>
+   			<?php
+   			$order = 1;
+   			$startTime = current(array_keys($sessionData));
+			$startTime = substr($startTime, 0, strpos($startTime, '-'));
+
+   			foreach ($sessionData as $time => $hook) :
+   				$funcData = unserialize($hook[1]);
+   				?>
+   					<tr <?php if($order % 2 == 0) echo "class='alternate'"; ?> >
+   						<td class="row-title"><?php echo floor((substr($time, 0, strpos($time, '-')) - $startTime) * 1000) . ' ms'; ?></td>
+						<td><?php echo $hook[0] ?></td>
+						<td>
+							<ul>
+							<?php 
+							if(!empty($funcData)) {
+								foreach($funcData as $priority => $func) { 
+									$funcData = array_values($func)[0]['function'];
+									
+									if(is_array($funcData)) {
+										$convert = (array) $funcData[0];
+										printf("<li> %s [Object] (%d)</li>", get_class((object) $funcData[0]), $priority); 
+										if(count($convert) > 0) {
+											echo "---- START OF OBJECT ----";
+											echo "<ul>";
+											foreach ($convert as $key => $value) {
+												printf("<li>%s => %s </li>", $key, $value);
+											}
+											echo "</ul>";
+											echo "---- END OF OBJECT ----";
+										}
+										
+									} else {
+										printf("<li>%s (%d)</li>",  $funcData, $priority);
+									} 
+								}
+							}
+							?>
+							</ul>
+						</td>
+					</tr>
+   				<?php
+   				$order++;
+   			endforeach;
+   			?>
+   				</tbody>
+   				<tfoot>
+					<tr>
+						<th class="row-title">Time From Start</th>
+						<th>Hook Name</th>
+						<th>Hooked Functions</th>
+					</tr>
+				</tfoot>
+			</table>
+   			<?php
+   		} else {
+   			echo __('<h2>No data was found!</h2>');
+   		}
+
+   }
+   
+   function __construct()
+   {
+   		add_action( 'edit_form_after_title', array($this, 'outputList') );
+   		add_action('do_meta_boxes' , array($this, 'removeMetaBoxes'));
+		add_filter('post_row_actions', array($this, 'removeOptions'),10,2);
+   }
 }
 ?>
