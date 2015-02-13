@@ -32,7 +32,10 @@ class HookerPostTypes
 	{
 		
 	}
-
+	/**
+	 * Init wp_hooker post type functions
+	 * @return void
+	 */
 	public static function init()
 	{
 		self::registerPostType();

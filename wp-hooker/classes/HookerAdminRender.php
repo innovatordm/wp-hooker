@@ -5,16 +5,25 @@ namespace WPHooker\Classes;
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
-/*
-if ( ! class_exists( 'AdminPageFramework')  && file_exists( dirname( __FILE__ ) . '/lib/AdminPageFramework/admin-page-framework.min.php' ) ) {
-    require_once( dirname( __FILE__ ) . '/lib/AdminPageFramework/admin-page-framework.min.php' );
-} */
-
 /**
 * Class for rendering Hooker Admin pages, extends Admin Page framework class
 */
 class HookerAdminRender
 {  
+	/**
+	 * Hook all necessary hooks on construct
+	 */
+	function __construct()
+   {
+   		add_action( 'edit_form_after_title', array($this, 'outputList') );
+   		add_action('do_meta_boxes' , array($this, 'removeMetaBoxes'));
+		add_filter('post_row_actions', array($this, 'removeOptions'),10,2);
+   }
+   /**
+    * Removes post unneeded actions for the wp_hooker post type
+    * @param  array $actions Wordpress post actions etc.
+    * @return array          Return the changed array
+    */
    public function removeOptions($actions)
    {
    		global $post;
@@ -25,7 +34,10 @@ class HookerAdminRender
 		}
 	    return $actions;
    }
-
+   /**
+    * Removes the submitdiv meta box (the box with the publish button etc.)
+    * @return void
+    */
    public function removeMetaBoxes()
    {
    		global $post;
@@ -33,7 +45,10 @@ class HookerAdminRender
    			remove_meta_box( 'submitdiv','wp_hooker','side' );
    		}
    }
-
+   /**
+    * Outputs the session data in a structured table on the edit page
+    * @return void
+    */
    public function outputList()
    {
    		global $post;
@@ -111,13 +126,6 @@ class HookerAdminRender
    			echo __('<h2>No data was found!</h2>');
    		}
 
-   }
-   
-   function __construct()
-   {
-   		add_action( 'edit_form_after_title', array($this, 'outputList') );
-   		add_action('do_meta_boxes' , array($this, 'removeMetaBoxes'));
-		add_filter('post_row_actions', array($this, 'removeOptions'),10,2);
    }
 }
 ?>
