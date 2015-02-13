@@ -3,10 +3,10 @@ use WPHooker\Classes\HookerSettings;
 use WPHooker\Classes\HookerPostTypes;
 use WPHooker\Classes\HookerAdminRender;
 /*
-Plugin Name: WordPress Hooker
+Plugin Name: WP Hooker
 Plugin URI: http://www.innovator.se
-Description: Generates a diagram of all active hooked functions
-Version: 0.1
+Description: WP Hooker records all fired WP hooks and their hooked functions, to easily let you debug hook issues!
+Version: 1.0
 Author: Innovator Digital Markets AB
 Author URI: http://www.innovator.se
 Text Domain: wp-hooker
