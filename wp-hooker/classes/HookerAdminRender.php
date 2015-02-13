@@ -62,9 +62,9 @@ class HookerAdminRender
    			<table class="widefat">
 				<thead>
 					<tr>
-						<th class="row-title">Time From Start</th>
-						<th>Hook Name</th>
-						<th>Hooked Functions</th>
+						<th class="row-title"><?php echo __('Time From Start', 'wp_hooker'); ?></th>
+						<th><?php echo __('Hook Name', 'wp_hooker'); ?></th>
+						<th><?php echo __('Hooked Functions', 'wp_hooker'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,15 +115,15 @@ class HookerAdminRender
    				</tbody>
    				<tfoot>
 					<tr>
-						<th class="row-title">Time From Start</th>
-						<th>Hook Name</th>
-						<th>Hooked Functions</th>
+						<th class="row-title"><?php echo __('Time From Start', 'wp_hooker'); ?></th>
+						<th><?php echo __('Hook Name', 'wp_hooker'); ?></th>
+						<th><?php echo __('Hooked Functions', 'wp_hooker'); ?></th>
 					</tr>
 				</tfoot>
 			</table>
    			<?php
    		} else {
-   			echo __('<h2>No data was found!</h2>');
+   			echo __('<h2>No data was found!</h2>', 'wp_hooker');
    		}
 
    }

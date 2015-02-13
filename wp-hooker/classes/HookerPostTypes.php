@@ -49,8 +49,8 @@ class HookerPostTypes
 	  register_post_type( 'wp_hooker',
 	    array(
 	      	'labels' => array(
-	        	'name' => __( 'Sessions' ),
-	        	'singular_name' => __( 'Session' )
+	        	'name' => __( 'Hooker Sessions', 'wp_hooker' ),
+	        	'singular_name' => __( 'Hooker Session', 'wp_hooker' )
 	      	),
 	      	'public' => true,
 	      	'has_archive' => false,

@@ -108,8 +108,8 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
         function dynamic_section($sections) {
             //$sections = array();
             $sections[] = array(
-                'title' => __('Section via hook', 'redux-framework-demo'),
-                'desc' => __('<p class="description">This is a section created by adding a filter to the sections array. Can be used by child themes to add/remove sections from the options.</p>', 'redux-framework-demo'),
+                'title' => __('Section via hook', 'wp_hooker'),
+                'desc' => __('<p class="description">This is a section created by adding a filter to the sections array. Can be used by child themes to add/remove sections from the options.</p>', 'wp_hooker'),
                 'icon' => 'el-icon-paper-clip',
                 // Leave this as a blank section, no options just some intro text set above.
                 'fields' => array()
@@ -187,7 +187,7 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
             $screenshot     = $this->theme->get_screenshot();
             $class          = $screenshot ? 'has-screenshot' : '';
 
-            $customize_title = sprintf(__('Customize &#8220;%s&#8221;', 'redux-framework-demo'), $this->theme->display('Name'));
+            $customize_title = sprintf(__('Customize &#8220;%s&#8221;', 'wp_hooker'), $this->theme->display('Name'));
             
             ?>
             <div id="current-theme" class="<?php echo esc_attr($class); ?>">
@@ -204,14 +204,14 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
 
                 <div>
                     <ul class="theme-info">
-                        <li><?php printf(__('By %s', 'redux-framework-demo'), $this->theme->display('Author')); ?></li>
-                        <li><?php printf(__('Version %s', 'redux-framework-demo'), $this->theme->display('Version')); ?></li>
-                        <li><?php echo '<strong>' . __('Tags', 'redux-framework-demo') . ':</strong> '; ?><?php printf($this->theme->display('Tags')); ?></li>
+                        <li><?php printf(__('By %s', 'wp_hooker'), $this->theme->display('Author')); ?></li>
+                        <li><?php printf(__('Version %s', 'wp_hooker'), $this->theme->display('Version')); ?></li>
+                        <li><?php echo '<strong>' . __('Tags', 'wp_hooker') . ':</strong> '; ?><?php printf($this->theme->display('Tags')); ?></li>
                     </ul>
                     <p class="theme-description"><?php echo $this->theme->display('Description'); ?></p>
             <?php
             if ($this->theme->parent()) {
-                printf(' <p class="howto">' . __('This <a href="%1$s">child theme</a> requires its parent theme, %2$s.') . '</p>', __('http://codex.wordpress.org/Child_Themes', 'redux-framework-demo'), $this->theme->parent()->display('Name'));
+                printf(' <p class="howto">' . __('This <a href="%1$s">child theme</a> requires its parent theme, %2$s.') . '</p>', __('http://codex.wordpress.org/Child_Themes', 'wp_hooker'), $this->theme->parent()->display('Name'));
             }
             ?>
 
@@ -238,16 +238,16 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
             
             $this->sections[] = array(
                 'icon'      => 'el-icon-check',
-                'title'     => __('Hooker Control', 'redux-framework-demo'),
-                'desc'      => __('<p class="description">This is the Description. Again HTML is allowed</p>', 'redux-framework-demo'),
+                'title'     => __('Hooker Control', 'wp_hooker'),
+                'desc'      => __('<p class="description"><strong>NOTE:</strong> WP Hooker should only be run in Development environments!</p>', 'wp_hooker'),
                 'fields'    => array(
                     
                     array(
                         'id'       => 'wp-hooker-status',
                         'type'     => 'button_set',
-                        'title'    => __('Unleash the Hooker', 'redux-framework-demo'),
-                        'subtitle' => __('Turn on/off the Hooker.', 'redux-framework-demo'),
-                        'desc'     => __('This will deactivate WP Hooker.', 'redux-framework-demo'),
+                        'title'    => __('Unleash the Hooker', 'wp_hooker'),
+                        'subtitle' => __('Turn on/off the Hooker.', 'wp_hooker'),
+                        'desc'     => __('This will deactivate WP Hooker.', 'wp_hooker'),
                         //Must provide key => value pairs for options
                         'options' => array(
                             '1' => 'On',
@@ -259,20 +259,20 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
             );
 
             $theme_info  = '<div class="redux-framework-section-desc">';
-            $theme_info .= '<p class="redux-framework-theme-data description theme-uri">' . __('<strong>Theme URL:</strong> ', 'redux-framework-demo') . '<a href="' . $this->theme->get('ThemeURI') . '" target="_blank">' . $this->theme->get('ThemeURI') . '</a></p>';
-            $theme_info .= '<p class="redux-framework-theme-data description theme-author">' . __('<strong>Author:</strong> ', 'redux-framework-demo') . $this->theme->get('Author') . '</p>';
-            $theme_info .= '<p class="redux-framework-theme-data description theme-version">' . __('<strong>Version:</strong> ', 'redux-framework-demo') . $this->theme->get('Version') . '</p>';
+            $theme_info .= '<p class="redux-framework-theme-data description theme-uri">' . __('<strong>Theme URL:</strong> ', 'wp_hooker') . '<a href="' . $this->theme->get('ThemeURI') . '" target="_blank">' . $this->theme->get('ThemeURI') . '</a></p>';
+            $theme_info .= '<p class="redux-framework-theme-data description theme-author">' . __('<strong>Author:</strong> ', 'wp_hooker') . $this->theme->get('Author') . '</p>';
+            $theme_info .= '<p class="redux-framework-theme-data description theme-version">' . __('<strong>Version:</strong> ', 'wp_hooker') . $this->theme->get('Version') . '</p>';
             $theme_info .= '<p class="redux-framework-theme-data description theme-description">' . $this->theme->get('Description') . '</p>';
             $tabs = $this->theme->get('Tags');
             if (!empty($tabs)) {
-                $theme_info .= '<p class="redux-framework-theme-data description theme-tags">' . __('<strong>Tags:</strong> ', 'redux-framework-demo') . implode(', ', $tabs) . '</p>';
+                $theme_info .= '<p class="redux-framework-theme-data description theme-tags">' . __('<strong>Tags:</strong> ', 'wp_hooker') . implode(', ', $tabs) . '</p>';
             }
             $theme_info .= '</div>';
 
             if (file_exists(dirname(__FILE__) . '/../README.md')) {
                 $this->sections['theme_docs'] = array(
                     'icon'      => 'el-icon-list-alt',
-                    'title'     => __('Documentation', 'redux-framework-demo'),
+                    'title'     => __('Documentation', 'wp_hooker'),
                     'fields'    => array(
                         array(
                             'id'        => '17',
@@ -283,25 +283,11 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
                     ),
                 );
             }
-            
-
-            $this->sections[] = array(
-                'icon'      => 'el-icon-info-sign',
-                'title'     => __('Theme Information', 'redux-framework-demo'),
-                'desc'      => __('<p class="description">This is the Description. Again HTML is allowed</p>', 'redux-framework-demo'),
-                'fields'    => array(
-                    array(
-                        'id'        => 'opt-raw-info',
-                        'type'      => 'raw',
-                        'content'   => $item_info,
-                    )
-                ),
-            );
 
             if (file_exists(trailingslashit(dirname(__FILE__)) . 'README.html')) {
                 $tabs['docs'] = array(
                     'icon'      => 'el-icon-book',
-                    'title'     => __('Documentation', 'redux-framework-demo'),
+                    'title'     => __('Documentation', 'wp_hooker'),
                     'content'   => nl2br(file_get_contents(trailingslashit(dirname(__FILE__)) . 'README.html'))
                 );
             }
@@ -312,18 +298,18 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
             // Custom page help tabs, displayed using the help API. Tabs are shown in order of definition.
             $this->args['help_tabs'][] = array(
                 'id'        => 'redux-help-tab-1',
-                'title'     => __('Theme Information 1', 'redux-framework-demo'),
-                'content'   => __('<p>This is the tab content, HTML is allowed.</p>', 'redux-framework-demo')
+                'title'     => __('Theme Information 1', 'wp_hooker'),
+                'content'   => __('<p>This is the tab content, HTML is allowed.</p>', 'wp_hooker')
             );
 
             $this->args['help_tabs'][] = array(
                 'id'        => 'redux-help-tab-2',
-                'title'     => __('Theme Information 2', 'redux-framework-demo'),
-                'content'   => __('<p>This is the tab content, HTML is allowed.</p>', 'redux-framework-demo')
+                'title'     => __('Theme Information 2', 'wp_hooker'),
+                'content'   => __('<p>This is the tab content, HTML is allowed.</p>', 'wp_hooker')
             );
 
             // Set the help sidebar
-            $this->args['help_sidebar'] = __('<p>This is the sidebar content, HTML is allowed.</p>', 'redux-framework-demo');
+            $this->args['help_sidebar'] = __('<p>This is the sidebar content, HTML is allowed.</p>', 'wp_hooker');
         }
 
         /**
@@ -343,13 +329,13 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
                 'page_slug' => '_wp_hooker_options',
                 'page_title' => 'WP Hooker Options',
                 'update_notice' => true,
-                'intro_text' => '<p>This text is displayed above the options panel. It isn\\’t required, but more info is always better! The intro_text field accepts all HTML.</p>’',
-                'footer_text' => '<p>This text is displayed below the options panel. It isn\\’t required, but more info is always better! The footer_text field accepts all HTML.</p>',
+                'intro_text' => '<p>Hooker Command Center</p>',
+                'footer_text' => '<p>WP Hooker by <a href="http://innovator.se">Innovator Digital Markets</a></p>',
                 'admin_bar' => true,
                 'menu_type' => 'menu',
                 'menu_title' => 'WP Hooker Options',
                 'allow_sub_menu' => true,
-                'page_parent_post_type' => 'your_post_type',
+                'page_parent_post_type' => 'wp_hooker',
                 'default_mark' => '*',
                 'hints' => 
                 array(
