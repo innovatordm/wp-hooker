@@ -61,7 +61,7 @@ class WPHooker
 		// Run only if status is set to active
 		if($this->settings->getOption('wp-hooker-status') == 1) {
 			for ($i=0; $i < count($this->hooks); $i++) { 
-				if($hook !== 'init')
+				if($this->hooks[$i] !== 'init')
 					add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
 			}
 			add_action( 'shutdown', __CLASS__ . '::execSave' );
@@ -97,7 +97,7 @@ class WPHooker
 			$this->hookLog[microtime(true) . '-' . uniqid()] = 
 			array(
 				$hookName,
-				serialize($this->hooksInfo[$hookName])
+				base64_encode(serialize($this->hooksInfo[$hookName]))
 			);
 		}	
 	}

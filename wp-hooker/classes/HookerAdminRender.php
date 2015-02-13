@@ -41,7 +41,7 @@ class HookerAdminRender
    public function removeMetaBoxes()
    {
    		global $post;
-	    if( $post->post_type == 'wp_hooker' ) {
+	    if( isset($post->post_type) && $post->post_type == 'wp_hooker' ) {
    			remove_meta_box( 'submitdiv','wp_hooker','side' );
    		}
    }
@@ -74,7 +74,7 @@ class HookerAdminRender
 			$startTime = substr($startTime, 0, strpos($startTime, '-'));
 
    			foreach ($sessionData as $time => $hook) :
-   				$funcData = unserialize($hook[1]);
+   				$funcData = unserialize(base64_decode($hook[1]));
    				?>
    					<tr <?php if($order % 2 == 0) echo "class='alternate'"; ?> >
    						<td class="row-title"><?php echo floor((substr($time, 0, strpos($time, '-')) - $startTime) * 1000) . ' ms'; ?></td>
@@ -93,6 +93,11 @@ class HookerAdminRender
 											echo "---- START OF OBJECT ----";
 											echo "<ul>";
 											foreach ($convert as $key => $value) {
+												$value = (!is_array($value)) ? $value : '[Array]';
+
+												if(is_object($value))
+													$value = '[Object]';
+												
 												printf("<li>%s => %s </li>", $key, $value);
 											}
 											echo "</ul>";
