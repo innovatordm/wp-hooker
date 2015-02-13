@@ -247,7 +247,7 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
                         'type'     => 'button_set',
                         'title'    => __('Unleash the Hooker', 'wp_hooker'),
                         'subtitle' => __('Turn on/off the Hooker.', 'wp_hooker'),
-                        'desc'     => __('This will deactivate WP Hooker.', 'wp_hooker'),
+                        'desc'     => __('This will activate/deactivate WP Hooker.', 'wp_hooker'),
                         //Must provide key => value pairs for options
                         'options' => array(
                             '1' => 'On',
@@ -379,27 +379,11 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
 
             // SOCIAL ICONS -> Setup custom links in the footer for quick links in your panel footer icons.
             $this->args['share_icons'][] = array(
-                'url'   => 'https://github.com/ReduxFramework/ReduxFramework',
+                'url'   => 'https://github.com/innovatordm/wp-hooker',
                 'title' => 'Visit us on GitHub',
                 'icon'  => 'el-icon-github'
                 //'img'   => '', // You can use icon OR img. IMG needs to be a full URL.
             );
-            $this->args['share_icons'][] = array(
-                'url'   => 'https://www.facebook.com/pages/Redux-Framework/243141545850368',
-                'title' => 'Like us on Facebook',
-                'icon'  => 'el-icon-facebook'
-            );
-            $this->args['share_icons'][] = array(
-                'url'   => 'http://twitter.com/reduxframework',
-                'title' => 'Follow us on Twitter',
-                'icon'  => 'el-icon-twitter'
-            );
-            $this->args['share_icons'][] = array(
-                'url'   => 'http://www.linkedin.com/company/redux-framework',
-                'title' => 'Find us on LinkedIn',
-                'icon'  => 'el-icon-linkedin'
-            );
-
         }
 
     }
