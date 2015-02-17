@@ -325,7 +325,7 @@ if (!class_exists('admin_folder_Redux_Framework_config')) {
             $this->args = array(
                 'opt_name' => 'wp_hooker_options',
                 'display_name' => 'WP Hooker Options',
-                'display_version' => '0.1',
+                'display_version' => '1.0',
                 'page_slug' => '_wp_hooker_options',
                 'page_title' => 'WP Hooker Options',
                 'update_notice' => true,
