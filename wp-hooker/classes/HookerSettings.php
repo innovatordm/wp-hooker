@@ -6,10 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if ( !class_exists( 'ReduxFramework' ) && file_exists( dirname( __FILE__ ) . '/lib/ReduxFramework/admin-init.php' ) ) {
-	require_once( dirname( __FILE__ ) . '/lib/ReduxFramework/admin-init.php' );
-}
-
 /**
 * Settings class for WPHooker 
 */
@@ -22,8 +18,10 @@ class HookerSettings
 	private $currentSettings;
 	function __construct()
 	{
-		global $wp_hooker_options;
-		$this->currentSettings = $wp_hooker_options; 	
+		$this->currentSettings = get_option( 'hooker_settings' ); 
+
+		add_action( 'admin_menu', array($this, 'hookerAddAdminMenu') );
+		add_action( 'admin_init', array($this, 'hookerSettingsInit') );	
 	}
 	/**
 	 * Return the specified if it exists, or false it not
@@ -35,6 +33,70 @@ class HookerSettings
 		if( !empty($this->currentSettings[$option]) )
 			return $this->currentSettings[$option];
 		return false;
+	}
+
+	public function hookerAddAdminMenu(  ) { 
+
+		add_menu_page( 'WP Hooker', 'WP Hooker Settings', 'manage_options', 'wp_hooker', array($this, 'hookerSettingsPage') );
+
+	}
+
+
+	public function hookerSettingsInit(  ) { 
+
+		register_setting( 'HookerSettings', 'hooker_settings' );
+
+		add_settings_section(
+			'hooker_HookerSettings_section', 
+			__( 'Unleash the hooker!', 'wp_hooker' ), 
+			array($this, 'hookerSectionCallback'), 
+			'HookerSettings'
+		);
+
+		add_settings_field( 
+			'hookerEnabled', 
+			__( 'Turn on/off the Hooker?', 'wp_hooker' ), 
+			array($this, 'hookerEnabled'), 
+			'HookerSettings', 
+			'hooker_HookerSettings_section' 
+		);
+
+
+	}
+
+
+	public function hookerEnabled(  ) { 
+
+		$options = get_option( 'hooker_settings' );
+		
+		?>
+		<input type='checkbox' name='hooker_settings[hookerEnabled]' <?php if(isset($options['hookerEnabled'])) checked( $options['hookerEnabled'], 1 ); ?> value='1'>
+		<?php
+
+	}
+
+
+	public function hookerSectionCallback(  ) { 
+
+	}
+
+
+	public function hookerSettingsPage(  ) { 
+
+		?>
+		<form action='options.php' method='post'>
+			
+			<h2>WP Hooker</h2>
+			
+			<?php
+			settings_fields( 'HookerSettings' );
+			do_settings_sections( 'HookerSettings' );
+			submit_button();
+			?>
+			
+		</form>
+		<?php
+
 	}
 }
 ?>

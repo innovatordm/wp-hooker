@@ -59,7 +59,7 @@ class WPHooker
 		$this->hooksInfo = $wp_filter;
 		$this->hooks = array_keys($wp_filter);
 		// Run only if status is set to active
-		if($this->settings->getOption('wp-hooker-status') == 1) {
+		if($this->settings->getOption('hookerEnabled') == 1) {
 			for ($i=0; $i < count($this->hooks); $i++) { 
 				if($this->hooks[$i] !== 'init')
 					add_filter( $this->hooks[$i], __CLASS__ . '::execLog', 0);
